@@ -1,16 +1,67 @@
-import { Link } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { NativeWindStyleSheet } from "nativewind";
-
+import { SafeAreaView } from "react-native-safe-area-context";
+import images from "@/constants/images"
+import CustomButton from "@/components/CustomButton";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function Index() {
+  const { loading, isLogged } = useGlobalContext();
+  
+  if (!loading && isLogged) return <Redirect href="/home" />;
   return (
-    <View className="flex-1 justify-center items-center font-pblack">
-      <Text>Auroa!</Text>
-      <StatusBar style="dark" />
-      <Link href="/profile" style={{ color: 'blue' }}>Go to Profile</Link>
-    </View>
+    <SafeAreaView className="bg-primary h-full">
+    {/* <Loader isLoading={loading} /> */}
+
+    <ScrollView
+      contentContainerStyle={{
+        height: "100%",
+      }}
+    >
+      <View className="w-full flex justify-center items-center h-full px-4">
+        <Image
+          source={images.logo2}
+          className="w-[130px] h-[84px]"
+          resizeMode="contain"
+        />
+
+        <Image
+          source={images.cards}
+          className="max-w-[380px] w-full h-[298px]"
+          resizeMode="contain"
+        />
+
+        <View className="relative mt-5">
+          <Text className="text-3xl text-white font-bold text-center">
+            Discover Endless{"\n"}
+            Possibilities with{" "}
+            <Text className="text-secondary-200">Bliss</Text>
+          </Text>
+
+          <Image
+            source={images.path}
+            className="w-[136px] h-[15px] absolute -bottom-2 -right-8"
+            resizeMode="contain"
+          />
+        </View>
+
+        <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
+          Where Creativity Meets Innovation: Embark on a Journey of Limitless
+          Exploration with Aora
+        </Text>
+
+        <CustomButton
+          title="Continue with Email"
+          handlePress={() => router.push("/sign-in")}
+          containerStyles="w-full mt-7"
+        />
+      </View>
+    </ScrollView>
+
+    <StatusBar backgroundColor="#161622" style="light" />
+  </SafeAreaView>
   );
 }
 
